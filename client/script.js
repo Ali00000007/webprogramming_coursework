@@ -52,8 +52,8 @@ function recordTime(){
 
 function clearRace(){
     participant = 1
-    let timeRecorded = document.querySelectorAll(".bananas").forEach(element => element.remove());
-    let participants = document.querySelectorAll(".participant").forEach(element => element.remove())
+    document.querySelectorAll(".bananas").forEach(element => element.remove());
+    document.querySelectorAll(".participant").forEach(element => element.remove())
 }
 
 function recordTime() {
