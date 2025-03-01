@@ -4,6 +4,7 @@ const resetTimerBtn = document.querySelector("#resetTimer");
 const recordTimeBtn = document.querySelector("#recordTime");
 const clearRaceBtn = document.querySelector("#clearRace");
 const loadRacesBtn = document.querySelector("#loadRaces");
+let recordedTimesList = document.querySelector('#recordedTimesList');
 
 let timerInterval;
 let elapsedSeconds = 0;
@@ -50,18 +51,13 @@ function recordTime(){
     participant += 1
 }
 
-function clearRace(){
-    participant = 1
-    document.querySelectorAll(".bananas").forEach(element => element.remove());
-    document.querySelectorAll(".participant").forEach(element => element.remove())
-}
 
 function recordTime() {
     const timeRecorded = document.createElement('p');
     timeRecorded.className = 'timeRecorded';
     timeRecorded.textContent = `Participant: ${participant} - ${formatTime(elapsedSeconds)}`;
 
-    document.body.appendChild(timeRecorded);
+    recordedTimesList.appendChild(timeRecorded);
 
     participant += 1;
 }
@@ -69,7 +65,7 @@ function recordTime() {
 
 function clearRace(){
   participant = 1
-  let timeRecorded = document.querySelectorAll(".timeRecorded").forEach(element => element.remove());
+  document.querySelectorAll(".timeRecorded").forEach(element => element.remove());
   resetTimer();
   startStopTimer();
 }
