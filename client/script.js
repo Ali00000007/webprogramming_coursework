@@ -4,7 +4,8 @@ const resetTimerBtn = document.querySelector("#resetTimer");
 const recordTimeBtn = document.querySelector("#recordTime");
 const clearRaceBtn = document.querySelector("#clearRace");
 const loadRacesBtn = document.querySelector("#loadRaces");
-let recordedTimesList = document.querySelector('#recordedTimesList');
+let recordedTimesList = document.querySelector("#recordedTimesList");
+const saveRaceBtn = document.querySelector("#saveRace");
 
 let timerInterval;
 let elapsedSeconds = 0;
@@ -98,8 +99,29 @@ async function loadResults(){
   showResults(results);
 }
 
-async function postResults(){
+let id = 3
 
+async function postResults(){
+  const participantTimes = Array.from(document.querySelectorAll('.timeRecorded')).map(el => el.textContent.split(' - ')[1]);
+
+  const payload = { id: id.toString(), participantTimes };
+
+  const response = await fetch('results', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if(response.ok){
+    const updatedResults = await response.json()
+    document.querySelectorAll(".timeRecorded").forEach(element => element.remove());
+    console.log(updatedResults);
+    console.log(payload);
+  }
+  else{
+    console.log("Failed to load messages");
+  }
+
+  id += 1
 }
 
 
@@ -108,3 +130,4 @@ resetTimerBtn.addEventListener("click", resetTimer);
 recordTimeBtn.addEventListener("click", recordTime);
 clearRaceBtn.addEventListener("click", clearRace);
 loadRacesBtn.addEventListener("click", loadResults)
+saveRaceBtn.addEventListener("click", postResults);
