@@ -6,6 +6,7 @@ const clearRaceBtn = document.querySelector("#clearRace");
 const loadRacesBtn = document.querySelector("#loadRaces");
 let recordedTimesList = document.querySelector("#recordedTimesList");
 const saveRaceBtn = document.querySelector("#saveRace");
+const idSendInput = document.querySelector("#idSend")
 
 let timerInterval;
 let elapsedSeconds = 0;
@@ -84,19 +85,34 @@ async function loadResults(){
   showResults(results);
 }
 
-async function getSingleResult(id){
-  const response = await fetch('results/', + id.stringify());
-  let result;
+
+async function getSingleResult() {
+  let idInput = document.querySelector("#idInput");
+  let id = idInput.value.trim();
+  const response = await fetch(`results/${id}`);
   if(response.ok){
-    results = await response.json()
-    for (const element of results) {
-      if(element.id === id){
-        result = element
-      }
-    }
+    const result = await response.json();
+    showResults([result]);
   }
-  return result;
 }
+
+
+// async function getSingleResult(){
+//   let idInput = document.querySelector("#idInput");
+//   let id = idInput.value;
+//   console.log(id);
+//   const response = await fetch('results/', + json.stringify(id));
+//   let result;
+//   if(response.ok){
+//     result = await response.json()
+//     for (const element of results) {
+//       if(element.id === id){
+//         result = element
+//       }
+//     }
+//   }
+//   return result;
+// }
 
 let id = 3
 
@@ -130,3 +146,4 @@ recordTimeBtn.addEventListener("click", recordTime);
 clearRaceBtn.addEventListener("click", clearRace);
 loadRacesBtn.addEventListener("click", loadResults)
 saveRaceBtn.addEventListener("click", postNewResults);
+idSendInput.addEventListener("click", getSingleResult);
