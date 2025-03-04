@@ -21,7 +21,7 @@ function getResults(req, res){
 }
 
 function postResults(req, res){
-  newResult = {
+  let newResult = {
     id: req.body.id,
     participantTimes: req.body.participantTimes
   }
