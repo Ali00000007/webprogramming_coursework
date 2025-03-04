@@ -101,7 +101,7 @@ async function loadResults(){
 
 let id = 3
 
-async function postResults(){
+async function postNewResults(){
   const participantTimes = Array.from(document.querySelectorAll('.timeRecorded')).map(el => el.textContent.split(' - ')[1]);
 
   const payload = { id: id.toString(), participantTimes };
@@ -114,8 +114,8 @@ async function postResults(){
   if(response.ok){
     const updatedResults = await response.json()
     document.querySelectorAll(".timeRecorded").forEach(element => element.remove());
-    console.log(updatedResults);
     console.log(payload);
+    loadResults();
   }
   else{
     console.log("Failed to load messages");
@@ -130,4 +130,4 @@ resetTimerBtn.addEventListener("click", resetTimer);
 recordTimeBtn.addEventListener("click", recordTime);
 clearRaceBtn.addEventListener("click", clearRace);
 loadRacesBtn.addEventListener("click", loadResults)
-saveRaceBtn.addEventListener("click", postResults);
+saveRaceBtn.addEventListener("click", postNewResults);

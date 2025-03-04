@@ -5,9 +5,6 @@ const app = express();
 app.use(express.static('client'));
 app.listen(8080);
 
-// message board app
-// stage 4: An API route for every message
-
 let results = [
   {
     id: '1',
@@ -24,8 +21,14 @@ function getResults(req, res){
 }
 
 function postResults(req, res){
-    res.json(results);
+  newResult = {
+    id: req.body.id,
+    participantTimes: req.body.participantTimes
+  }
+  results.push(newResult)
+  res.json(results);
 }
+
 
 app.get('/results', getResults);
 app.post('/results', express.json(), postResults)
