@@ -39,20 +39,6 @@ function resetTimer(){
 
 let participant = 1
 
-function recordTime(){
-    const timeRecorded = document.createElement("p");
-    timeRecorded.className = "bananas";
-    timeRecorded.id = "time"
-    let time = document.createTextNode(formatTime(elapsedSeconds));
-    timeRecorded.append(time);
-    const participantNumber = document.createElement("p") 
-    participantNumber.className = "participant"
-    participantNumber.textContent = `Participant: ${participant}: ` + formatTime(elapsedSeconds);
-    document.body.appendChild(participantNumber)
-    participant += 1
-}
-
-
 function recordTime() {
     const timeRecorded = document.createElement('p');
     timeRecorded.className = 'timeRecorded';
@@ -86,7 +72,6 @@ function showResults(results) {
 }
 
 
-
 async function loadResults(){
   const response = await fetch('results');
   let results;
@@ -97,6 +82,20 @@ async function loadResults(){
     results = "Failed to load results"
   }
   showResults(results);
+}
+
+async function getSingleResult(id){
+  const response = await fetch('results/', + id.stringify());
+  let result;
+  if(response.ok){
+    results = await response.json()
+    for (const element of results) {
+      if(element.id === id){
+        result = element
+      }
+    }
+  }
+  return result;
 }
 
 let id = 3
