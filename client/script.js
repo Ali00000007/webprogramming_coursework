@@ -7,6 +7,7 @@ const loadRacesBtn = document.querySelector("#loadRaces");
 let recordedTimesList = document.querySelector("#recordedTimesList");
 const saveRaceBtn = document.querySelector("#saveRace");
 const idSendInput = document.querySelector("#idSend")
+const clearScreenBtn = document.querySelector("#clearScreen");
 
 let timerInterval;
 let elapsedSeconds = 0;
@@ -50,7 +51,6 @@ function recordTime() {
     participant += 1;
 }
 
-
 function clearRace(){
   participant = 1
   document.querySelectorAll(".timeRecorded").forEach(element => element.remove());
@@ -72,7 +72,6 @@ function showResults(results) {
   }
 }
 
-
 async function loadResults(){
   const response = await fetch('results');
   let results;
@@ -85,7 +84,6 @@ async function loadResults(){
   showResults(results);
 }
 
-
 async function getSingleResult() {
   let idInput = document.querySelector("#idInput");
   let id = idInput.value.trim();
@@ -94,25 +92,10 @@ async function getSingleResult() {
     const result = await response.json();
     showResults([result]);
   }
+  else{
+    console.log("Race with that ID doesn not exist");
+  }
 }
-
-
-// async function getSingleResult(){
-//   let idInput = document.querySelector("#idInput");
-//   let id = idInput.value;
-//   console.log(id);
-//   const response = await fetch('results/', + json.stringify(id));
-//   let result;
-//   if(response.ok){
-//     result = await response.json()
-//     for (const element of results) {
-//       if(element.id === id){
-//         result = element
-//       }
-//     }
-//   }
-//   return result;
-// }
 
 let id = 3
 
@@ -130,13 +113,17 @@ async function postNewResults(){
     const updatedResults = await response.json()
     document.querySelectorAll(".timeRecorded").forEach(element => element.remove());
     console.log(payload);
-    loadResults();
   }
   else{
     console.log("Failed to load messages");
   }
 
   id += 1
+}
+
+function clearScreen(){
+  document.getElementById("resultsList").innerHTML = "";
+  //document.getElementById("recordedTimesList").innerHTML = "";
 }
 
 
@@ -147,3 +134,4 @@ clearRaceBtn.addEventListener("click", clearRace);
 loadRacesBtn.addEventListener("click", loadResults)
 saveRaceBtn.addEventListener("click", postNewResults);
 idSendInput.addEventListener("click", getSingleResult);
+clearScreenBtn.addEventListener("click", clearScreen);
