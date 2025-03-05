@@ -1,23 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Run Race</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <input id="idInput" type=text placeholder="Input race ID here">
-  <input id="idSend" type=submit value=Submit>
-  <button id="startTimer">Start Timer</button>
-  <button id="resetTimer">Reset Timer</button>
-  <button id="recordTime">Record Time</button>
-  <button id="clearRace">Clear Race</button>
-  <button id="saveRace">Save Race</button>
-  <button id="loadRaces">Load All Races</button>
-  <button id="clearScreen">Clear Screen</button>
+  <h1>Race Timer</h1>
+  
+  <div>
+    <input id="idInput" type="text" placeholder="Enter Race ID">
+    <input id="idSend" type="submit" value="Fetch Result">
+  </div>
+
+  <div>
+    <button id="startTimer">Start Timer</button>
+    <button id="resetTimer">Reset Timer</button>
+    <button id="recordTime">Record Time</button>
+    <button id="clearRace">Clear Race</button>
+    <button id="saveRace">Save Race</button>
+    <button id="loadRaces">Load Races</button>
+    <button id="clearScreen">Clear Screen</button>
+  </div>
+
   <p id="timerDisplay">00:00:00</p>
+
+  <h2>Race Results</h2>
   <ul id="resultsList"></ul>
+
+  <h2>Recorded Times</h2>
   <ul id="recordedTimesList"></ul>
+
   <script src="script.js"></script>
 </body>
 </html>

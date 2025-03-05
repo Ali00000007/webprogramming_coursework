@@ -35,8 +35,8 @@ function startStopTimer() {
 }
 
 function resetTimer(){
-    elapsedSeconds = 0
-    timerDisplay.textContent = formatTime(elapsedSeconds);
+  elapsedSeconds = 0;
+  timerDisplay.textContent = formatTime(elapsedSeconds);
 }
 
 let participant = 1
@@ -100,6 +100,8 @@ async function getSingleResult() {
 let id = 3
 
 async function postNewResults(){
+  resetTimer();
+  participant = 1;
   const participantTimes = Array.from(document.querySelectorAll('.timeRecorded')).map(el => el.textContent.split(' - ')[1]);
 
   const payload = { id: id.toString(), participantTimes };
@@ -112,12 +114,10 @@ async function postNewResults(){
   if(response.ok){
     const updatedResults = await response.json()
     document.querySelectorAll(".timeRecorded").forEach(element => element.remove());
-    console.log(payload);
   }
   else{
     console.log("Failed to load messages");
   }
-
   id += 1
 }
 
@@ -125,7 +125,6 @@ function clearScreen(){
   document.getElementById("resultsList").innerHTML = "";
   //document.getElementById("recordedTimesList").innerHTML = "";
 }
-
 
 startTimerBtn.addEventListener("click", startStopTimer);
 resetTimerBtn.addEventListener("click", resetTimer);
