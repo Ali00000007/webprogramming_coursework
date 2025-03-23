@@ -39,16 +39,6 @@ function postResults(req, res){
   res.json(results);
 }
 
-function deleteResult(req, res){
-  for (const result of results) {
-    if(result.id === req.params.id){
-      results[req.params.id].delete();
-    }
-  }
-  res.status(404).send("No match for that ID");
-}
-
 app.get('/results/:id', getResult)
 app.get('/results', getResults);
 app.post('/results', express.json(), postResults)
-app.delete('results/:id', deleteResult)
