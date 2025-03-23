@@ -21,18 +21,21 @@ function formatTime(seconds) {
 }
 
 function startStopTimer() {
+  const img = startTimerBtn.querySelector("img"); // Get the image inside the button
+
   if (timerInterval) {
     clearInterval(timerInterval);
     timerInterval = null;
-    startTimerBtn.textContent = "Start Timer";
+    img.src = "Images/play_img.png"; // Switch back to play button
   } else {
-    startTimerBtn.textContent = "Stop Timer";
+    img.src = "Images/pause_img.jpg"; // Switch to pause button
     timerInterval = setInterval(() => {
       elapsedSeconds++;
       timerDisplay.textContent = formatTime(elapsedSeconds);
     }, 1000);
   }
 }
+
 
 function resetTimer(){
   elapsedSeconds = 0;
