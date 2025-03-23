@@ -21,14 +21,14 @@ function formatTime(seconds) {
 }
 
 function startStopTimer() {
-  const img = startTimerBtn.querySelector("img"); // Get the image inside the button
+  const img = startTimerBtn.querySelector("img");
 
   if (timerInterval) {
     clearInterval(timerInterval);
     timerInterval = null;
-    img.src = "Images/play_img.png"; // Switch back to play button
+    img.src = "Images/play_img.png";
   } else {
-    img.src = "Images/pause_img.jpg"; // Switch to pause button
+    img.src = "Images/pause_img.jpg";
     timerInterval = setInterval(() => {
       elapsedSeconds++;
       timerDisplay.textContent = formatTime(elapsedSeconds);
