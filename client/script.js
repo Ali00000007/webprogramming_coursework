@@ -12,6 +12,7 @@ const clearScreenBtn = document.querySelector("#clearScreen");
 let timerInterval;
 let elapsedSeconds = 0;
 
+
 function formatTime(seconds) {
   const hrs = Math.floor(seconds / 3600);
   const mins = Math.floor((seconds % 3600) / 60);
@@ -110,7 +111,7 @@ async function postNewResults(){
   participant = 1;
   const participantTimes = Array.from(document.querySelectorAll('.timeRecorded')).map(el => el.textContent.split(' - ')[1]);
 
-  const payload = { id: id.toString(), participantTimes };
+  const payload = { id: id.toString(), participantTimes: participantTimes };
 
   const response = await fetch('results', {
     method: 'POST',
