@@ -3,49 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Run Race</title>
+  <title>Choose Role</title>
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+
+  <h2>Select Your Role</h2>
   
-  <div>
-    <h2>Get single race</h2>
-    <input id="idInput" type="text" placeholder="Enter Race ID">
-    <input id="idSend" type="submit" value="Fetch Result">
+  <button id="adminButton">Admin</button>
+  <button id="runnerButton">Runner</button>
 
-  <div>
-    <button id="startTimer">
-      <i class="fas fa-play"></i>
-    </button>
-    <button id="resetTimer">
-      <i class="fas fa-undo"></i>
-    </button>
-    <button id="recordTime">
-      <i class="fas fa-stopwatch"></i>
-    </button>
-    <button id="clearRace">
-      <i class="fas fa-trash"></i>
-    </button>
-    <button id="saveRace">
-      <i class="fas fa-save"></i>
-    </button>
-    <button id="loadRaces">
-      <i class="fas fa-folder-open"></i>
-    </button>
-    <button id="clearScreen">
-      <i class="fas fa-eraser"> Clear Screen</i>
-    </button>
-  </div>
+  <script>
+    // Redirect to admin page
+    document.getElementById('adminButton').addEventListener('click', function() {
+      window.location.href = 'admin.html';  // Replace 'adminPage.html' with your actual admin page filename
+    });
 
-  <p id="timerDisplay">00:00:00</p>
+    // Redirect to runner page
+    document.getElementById('runnerButton').addEventListener('click', function() {
+      window.location.href = 'runner.html';  // Replace 'runnerPage.html' with your actual runner page filename
+    });
+  </script>
 
-  <h2>Race Results</h2>
-  <ul id="resultsList"></ul>
-
-  <h2>Recorded Times</h2>
-  <ul id="recordedTimesList"></ul>
-
-  <script src="script.js"></script>
 </body>
 </html>
