@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Run Race</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
   
@@ -15,14 +16,26 @@
 
   <div>
     <button id="startTimer">
-      <img src="Images/play_img.png">
+      <i class="fas fa-play"></i>
     </button>
-    <button id="resetTimer">Reset Timer</button>
-    <button id="recordTime">Record Time</button>
-    <button id="clearRace">Clear Race</button>
-    <button id="saveRace">Save Race</button>
-    <button id="loadRaces">Load Races</button>
-    <button id="clearScreen">Clear Screen</button>
+    <button id="resetTimer">
+      <i class="fas fa-undo"></i>
+    </button>
+    <button id="recordTime">
+      <i class="fas fa-stopwatch"></i>
+    </button>
+    <button id="clearRace">
+      <i class="fas fa-trash"></i>
+    </button>
+    <button id="saveRace">
+      <i class="fas fa-save"></i>
+    </button>
+    <button id="loadRaces">
+      <i class="fas fa-folder-open"></i>
+    </button>
+    <button id="clearScreen">
+      <i class="fas fa-eraser"> Clear Screen</i>
+    </button>
   </div>
 
   <p id="timerDisplay">00:00:00</p>

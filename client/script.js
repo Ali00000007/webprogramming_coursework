@@ -21,20 +21,23 @@ function formatTime(seconds) {
 }
 
 function startStopTimer() {
-  const img = startTimerBtn.querySelector("img");
+  const icon = startTimerBtn.querySelector("i");
 
   if (timerInterval) {
     clearInterval(timerInterval);
     timerInterval = null;
-    img.src = "Images/play_img.png";
+    icon.classList.remove("fa-pause");
+    icon.classList.add("fa-play"); // Switch to play icon
   } else {
-    img.src = "Images/pause_img.jpg";
+    icon.classList.remove("fa-play");
+    icon.classList.add("fa-pause"); // Switch to pause icon
     timerInterval = setInterval(() => {
       elapsedSeconds++;
       timerDisplay.textContent = formatTime(elapsedSeconds);
     }, 1000);
   }
 }
+
 
 
 function resetTimer(){
