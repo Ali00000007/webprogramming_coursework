@@ -49,14 +49,21 @@ function resetTimer(){
 let participant = 1
 
 function recordTime() {
-    const timeRecorded = document.createElement('p');
-    timeRecorded.className = 'timeRecorded';
-    timeRecorded.textContent = `Participant: ${participant} - ${formatTime(elapsedSeconds)}`;
+  const nameInput = document.querySelector("#participantName");
+  const customLabel = nameInput.value.trim();
 
-    recordedTimesList.appendChild(timeRecorded);
+  const label = customLabel !== "" ? customLabel : `Participant ${participant}`;
 
-    participant += 1;
+  const timeRecorded = document.createElement('p');
+  timeRecorded.className = 'timeRecorded';
+  timeRecorded.textContent = `${label} - ${formatTime(elapsedSeconds)}`;
+
+  recordedTimesList.appendChild(timeRecorded);
+
+  participant += 1;
+  nameInput.value = "";
 }
+
 
 function clearRace(){
   participant = 1
@@ -106,10 +113,12 @@ async function getSingleResult() {
 
 let id = 3
 
-async function postNewResults(){
+async function postNewResults() {
   resetTimer();
   participant = 1;
-  const participantTimes = Array.from(document.querySelectorAll('.timeRecorded')).map(el => el.textContent.split(' - ')[1]);
+  
+  const timeElements = Array.from(document.querySelectorAll('.timeRecorded'));
+  const participantTimes = timeElements.map((el, index) => `participant ${index + 1}: ${el.textContent.split(' - ')[1]}`);
 
   const payload = { id: id.toString(), participantTimes: participantTimes };
 
@@ -118,15 +127,17 @@ async function postNewResults(){
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
-  if(response.ok){
-    const updatedResults = await response.json()
+
+  if (response.ok) {
+    const updatedResults = await response.json();
     document.querySelectorAll(".timeRecorded").forEach(element => element.remove());
-  }
-  else{
+  } else {
     console.log("Failed to load messages");
   }
-  id += 1
+
+  id += 1;
 }
+
 
 function clearScreen(){
   document.getElementById("resultsList").innerHTML = "";
