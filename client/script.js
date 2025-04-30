@@ -46,23 +46,32 @@ function resetTimer(){
   timerDisplay.textContent = formatTime(elapsedSeconds);
 }
 
+let participantData = [];
+
 let participant = 1
 
 function recordTime() {
   const nameInput = document.querySelector("#participantName");
   const customLabel = nameInput.value.trim();
-
   const label = customLabel !== "" ? customLabel : `Participant ${participant}`;
+  const time = formatTime(elapsedSeconds);
+
+  participantData.push({
+    id: participant,
+    name: label,
+    time: time
+  });
 
   const timeRecorded = document.createElement('p');
   timeRecorded.className = 'timeRecorded';
-  timeRecorded.textContent = `${label} - ${formatTime(elapsedSeconds)}`;
+  timeRecorded.textContent = `${label} - ${time}`;
 
   recordedTimesList.appendChild(timeRecorded);
 
   participant += 1;
-  nameInput.value = "";
+  nameInput.value = ""; 
 }
+
 
 
 function clearRace(){
@@ -78,13 +87,20 @@ function showResults(results) {
 
   for (const result of results) {
     const li = document.createElement("li");
-    
-    const times = result.participantTimes.join(", ");
-    li.textContent = `ID: ${result.id}, Participant Times: ${times}`;
+
+    if (Array.isArray(result.participants)) {
+      const times = result.participants
+        .map(p => `${p.name} (${p.time})`)
+        .join(", ");
+      li.textContent = `ID: ${result.id}, Participants: ${times}`;
+    } else {
+      li.textContent = `ID: ${result.id}, No participants data`;
+    }
 
     list.appendChild(li);
   }
 }
+
 
 async function loadResults(){
   const response = await fetch('results');
@@ -116,11 +132,11 @@ let id = 3
 async function postNewResults() {
   resetTimer();
   participant = 1;
-  
-  const timeElements = Array.from(document.querySelectorAll('.timeRecorded'));
-  const participantTimes = timeElements.map((el, index) => `participant ${index + 1}: ${el.textContent.split(' - ')[1]}`);
 
-  const payload = { id: id.toString(), participantTimes: participantTimes };
+  const payload = {
+    id: id.toString(),
+    participants: participantData
+  };
 
   const response = await fetch('results', {
     method: 'POST',
@@ -131,12 +147,15 @@ async function postNewResults() {
   if (response.ok) {
     const updatedResults = await response.json();
     document.querySelectorAll(".timeRecorded").forEach(element => element.remove());
+    participantData = [];
   } else {
     console.log("Failed to load messages");
   }
 
   id += 1;
 }
+
+
 
 
 function clearScreen(){

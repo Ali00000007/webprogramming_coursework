@@ -30,14 +30,16 @@ function getResult(req, res){
   res.status(404).send("No match for that ID");
 }
 
-function postResults(req, res){
-  let newResult = {
+function postResults(req, res) {
+  const newResult = {
     id: req.body.id,
-    participantTimes: req.body.participantTimes
-  }
-  results.push(newResult)
+    participants: req.body.participants
+  };
+
+  results.push(newResult);
   res.json(results);
 }
+
 
 app.get('/results/:id', getResult)
 app.get('/results', getResults);
