@@ -6,7 +6,7 @@ const clearRaceBtn = document.querySelector("#clearRace");
 const loadRacesBtn = document.querySelector("#loadRaces");
 let recordedTimesList = document.querySelector("#recordedTimesList");
 const saveRaceBtn = document.querySelector("#saveRace");
-const idSendInput = document.querySelector("#idSend")
+const idSendInput = document.querySelector("#idSend");
 const clearScreenBtn = document.querySelector("#clearScreen");
 
 let timerInterval;
