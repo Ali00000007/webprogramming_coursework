@@ -110,7 +110,6 @@ function showResults(results) {
 }
 
 
-
 async function loadResults(){
   const response = await fetch('results');
   let results;
@@ -127,12 +126,18 @@ async function getSingleResult() {
   let idInput = document.querySelector("#idInput");
   let id = idInput.value.trim();
   const response = await fetch(`results/${id}`);
-  if(response.ok){
+
+  const list = document.querySelector("#resultsList");
+  list.innerHTML = "";
+
+  if (response.ok) {
     const result = await response.json();
     showResults([result]);
-  }
-  else{
-    console.log("Race with that ID doesn not exist");
+  } else {
+    const errorItem = document.createElement("li");
+    errorItem.textContent = "Race with that ID does not exist";
+    errorItem.style.color = "red";
+    list.appendChild(errorItem);
   }
 }
 
