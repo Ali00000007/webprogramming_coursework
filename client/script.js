@@ -87,19 +87,28 @@ function showResults(results) {
 
   for (const result of results) {
     const li = document.createElement("li");
+    const header = document.createElement("div");
+    header.textContent = `ID: ${result.id}`;
+    li.appendChild(header);
 
-    if (Array.isArray(result.participants)) {
-      const times = result.participants
-        .map(p => `${p.name} (${p.time})`)
-        .join(", ");
-      li.textContent = `ID: ${result.id}, Participants: ${times}`;
+    if (Array.isArray(result.participants) && result.participants.length > 0) {
+      const sublist = document.createElement("ul");
+      for (const p of result.participants) {
+        const subitem = document.createElement("li");
+        subitem.textContent = `${p.name} (${p.time})`;
+        sublist.appendChild(subitem);
+      }
+      li.appendChild(sublist);
     } else {
-      li.textContent = `ID: ${result.id}, No participants data`;
+      const noData = document.createElement("div");
+      noData.textContent = "No participants data";
+      li.appendChild(noData);
     }
 
     list.appendChild(li);
   }
 }
+
 
 
 async function loadResults(){
@@ -127,7 +136,7 @@ async function getSingleResult() {
   }
 }
 
-let id = 3
+let id = 1
 
 async function postNewResults() {
   resetTimer();
