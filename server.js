@@ -49,3 +49,27 @@ function postResults(req, res) {
 app.get('/results/:id', getResult)
 app.get('/results', getResults);
 app.post('/results', express.json(), postResults)
+app.post('/results/db', express.json(), async (req, res) => {
+  try {
+    const participants = req.body.participants;
+    const db = await dbPromise;
+
+    const result = await db.run('INSERT INTO races DEFAULT VALUES');
+    const raceId = result.lastID; 
+
+    const stmt = await db.prepare('INSERT INTO results (race_id, name, time) VALUES (?, ?, ?)');
+
+    for (const p of participants) {
+      await stmt.run(raceId, p.name, p.time); 
+    }
+
+    await stmt.finalize();
+
+    res.status(201).json({ success: true, message: "Race results saved to database" });
+  } catch (error) {
+    console.error("Error posting to DB:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+

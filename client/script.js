@@ -176,11 +176,25 @@ async function postResultsToDatabase() {
   participant = 1;
 
   const payload = {
-    id: id.toString(),
-    participants: participantData
+    id: id.toString(), 
+    participants: participantData 
   };
 
+  const response = await fetch('/results/db', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (response.ok) {
+    console.log("Results posted successfully.");
+  } else {
+    console.log("Failed to post results.");
+  }
 }
+
 
 function checkOnlineStatus(){
   console.log("Online status:", navigator.onLine);
