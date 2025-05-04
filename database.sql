@@ -1,17 +1,11 @@
-CREATE TABLE participants (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL
-);
-
 CREATE TABLE races (
-  id INTEGER PRIMARY KEY AUTOINCREMENT
+  id TEXT PRIMARY KEY
 );
 
 CREATE TABLE results (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  race_id INTEGER NOT NULL,
-  participant_id INTEGER NOT NULL,
+  race_id TEXT NOT NULL,
+  name TEXT NOT NULL,
   time TEXT NOT NULL,
-  FOREIGN KEY (race_id) REFERENCES races(id),
-  FOREIGN KEY (participant_id) REFERENCES participants(id)
+  FOREIGN KEY (race_id) REFERENCES races(id)
 );
