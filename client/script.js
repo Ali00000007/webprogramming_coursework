@@ -144,6 +144,7 @@ async function getSingleResult() {
 let id = 1
 
 async function postNewResults() {
+  console.log("Posting to local storage");
   resetTimer();
   participant = 1;
 
@@ -169,7 +170,28 @@ async function postNewResults() {
   id += 1;
 }
 
+async function postResultsToDatabase() {
+  console.log("Posting to database");
+  resetTimer();
+  participant = 1;
 
+  const payload = {
+    id: id.toString(),
+    participants: participantData
+  };
+
+}
+
+function checkOnlineStatus(){
+  console.log("Online status:", navigator.onLine);
+
+  if (navigator.onLine){
+    postResultsToDatabase();
+  }
+  else{
+    postNewResults();
+  }
+}
 
 
 function clearScreen(){
@@ -182,6 +204,6 @@ resetTimerBtn.addEventListener("click", resetTimer);
 recordTimeBtn.addEventListener("click", recordTime);
 clearRaceBtn.addEventListener("click", clearRace);
 loadRacesBtn.addEventListener("click", loadResults)
-saveRaceBtn.addEventListener("click", postNewResults);
+saveRaceBtn.addEventListener("click", checkOnlineStatus);
 idSendInput.addEventListener("click", getSingleResult);
 clearScreenBtn.addEventListener("click", clearScreen);
