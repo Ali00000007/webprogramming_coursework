@@ -1,9 +1,22 @@
 import express from 'express';
 import uuid from 'uuid-random';
+import sqlite3 from 'sqlite3';
+import { open } from 'sqlite';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
 
 const app = express();
 app.use(express.static('client'));
 app.listen(8080);
+
+let db;
+
+const dbPromise = open({
+  filename: path.resolve('data', 'database.sqlite'),
+  driver: sqlite3.Database,
+});
 
 let results = [
 ];
