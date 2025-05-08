@@ -47,6 +47,11 @@
 
   <p id="timerDisplay">00:00:00</p>
 
+  <div id="currentRace">
+    <h3>Current Race ID: <span id="currentRaceId">Loading...</span></h3>
+  </div>
+  
+
   <h2>Race Results</h2>
   <ul id="resultsList"></ul>
 
@@ -57,23 +62,34 @@
   
   <script>
     // Function to update online/offline status
-    function updateOnlineStatus() {
-      const statusElement = document.getElementById("connectionStatus");
-      if (navigator.onLine) {
-        statusElement.textContent = "online";
-        statusElement.style.color = "green";  // Change text color to green when online
-      } else {
-        statusElement.textContent = "offline";
-        statusElement.style.color = "red";  // Change text color to red when offline
-      }
+  async function updateOnlineStatus() {
+  const statusElement = document.getElementById("connectionStatus");
+  const currentRaceIdElement = document.getElementById("currentRaceId");
+
+  if (navigator.onLine) {
+    statusElement.textContent = "online";
+    statusElement.style.color = "green";  // Change text color to green when online
+
+    try {
+      const raceId = await fetchLatestRaceId();
+      currentRaceIdElement.textContent = raceId ? raceId : "No race found";
+    } catch (error) {
+      currentRaceIdElement.textContent = "Error loading race ID";
     }
+  } else {
+    statusElement.textContent = "offline";
+    statusElement.style.color = "red";  // Change text color to red when offline
+    currentRaceIdElement.textContent = "Offline (Race ID not available)";
+  }
+}
 
-    // Update status on page load
-    updateOnlineStatus();
+  // Update status on page load
+  window.addEventListener('load', updateOnlineStatus);
 
-    // Listen for changes in online/offline status
-    window.addEventListener('online', updateOnlineStatus);
-    window.addEventListener('offline', updateOnlineStatus);
+  // Listen for changes in online/offline status
+  window.addEventListener('online', updateOnlineStatus);
+  window.addEventListener('offline', updateOnlineStatus);
+
   </script>
 </body>
 </html>

@@ -12,7 +12,6 @@ const clearScreenBtn = document.querySelector("#clearScreen");
 let timerInterval;
 let elapsedSeconds = 0;
 
-
 function formatTime(seconds) {
   const hrs = Math.floor(seconds / 3600);
   const mins = Math.floor((seconds % 3600) / 60);
@@ -39,16 +38,21 @@ function startStopTimer() {
   }
 }
 
-
-
 function resetTimer(){
   elapsedSeconds = 0;
   timerDisplay.textContent = formatTime(elapsedSeconds);
 }
 
 let participantData = [];
+let participant = 1;
 
-let participant = 1
+function formatTime(seconds) {
+  const hrs = Math.floor(seconds / 3600);
+  const mins = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+
+  return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
 
 function recordTime() {
   const nameInput = document.querySelector("#participantName");
@@ -56,15 +60,34 @@ function recordTime() {
   const label = customLabel !== "" ? customLabel : `Participant ${participant}`;
   const time = formatTime(elapsedSeconds);
 
+  // Save the recorded data
   participantData.push({
     id: participant,
     name: label,
     time: time
   });
 
-  const timeRecorded = document.createElement('p');
+  // Create a container for the recorded time and name
+  const timeRecorded = document.createElement('div');
   timeRecorded.className = 'timeRecorded';
-  timeRecorded.textContent = `${label} - ${time}`;
+  timeRecorded.setAttribute('data-id', participant); // Assign an ID for editing later
+
+  const timeText = document.createElement('span');
+  timeText.className = 'timeText';
+  timeText.textContent = `${label} - ${time}`;
+  
+  // Store the original time in a custom attribute
+  timeRecorded.setAttribute('data-time', time);
+
+  // Create an "Edit" button
+  const editButton = document.createElement('button');
+  editButton.className = 'editButton';
+  editButton.textContent = 'Edit';
+  editButton.addEventListener('click', () => editParticipantName(timeRecorded, label));
+
+  // Add the time and the "Edit" button to the container
+  timeRecorded.appendChild(timeText);
+  timeRecorded.appendChild(editButton);
 
   recordedTimesList.appendChild(timeRecorded);
 
@@ -72,10 +95,60 @@ function recordTime() {
   nameInput.value = ""; 
 }
 
+function editParticipantName(timeRecorded, oldName) {
+  const timeText = timeRecorded.querySelector('.timeText');
+  
+  // Replace the name text with an input field to edit
+  const nameInput = document.createElement('input');
+  nameInput.type = 'text';
+  nameInput.value = oldName;
+  
+  // Replace the time text with the input field
+  timeRecorded.replaceChild(nameInput, timeText);
+
+  // Change the "Edit" button to "Save"
+  const saveButton = document.createElement('button');
+  saveButton.className = 'saveButton';
+  saveButton.textContent = 'Save';
+  
+  // Replace the "Edit" button with the "Save" button
+  saveButton.addEventListener('click', () => saveParticipantName(timeRecorded, nameInput.value));
+  timeRecorded.replaceChild(saveButton, timeRecorded.querySelector('.editButton'));
+}
+
+function saveParticipantName(timeRecorded, newName) {
+  const nameInput = timeRecorded.querySelector('input');
+  
+  // Retrieve the original time stored in the 'data-time' attribute
+  const originalTime = timeRecorded.getAttribute('data-time');
+  
+  // Create a new span for the time and name
+  const timeText = document.createElement('span');
+  timeText.className = 'timeText';
+  timeText.textContent = `${newName} - ${originalTime}`;
+
+  // Replace the input field with the new name and original time
+  timeRecorded.replaceChild(timeText, nameInput);
+
+  // Replace the "Save" button back to the "Edit" button
+  const editButton = document.createElement('button');
+  editButton.className = 'editButton';
+  editButton.textContent = 'Edit';
+  editButton.addEventListener('click', () => editParticipantName(timeRecorded, newName));
+  timeRecorded.replaceChild(editButton, timeRecorded.querySelector('.saveButton'));
+
+  // Update the participant data in the `participantData` array
+  const participantId = timeRecorded.getAttribute('data-id');
+  const participantIndex = participantData.findIndex(p => p.id === parseInt(participantId));
+  if (participantIndex !== -1) {
+    participantData[participantIndex].name = newName;
+  }
+}
+
 
 
 function clearRace(){
-  participant = 1
+  participant = 1;
   document.querySelectorAll(".timeRecorded").forEach(element => element.remove());
   resetTimer();
   startStopTimer();
@@ -109,7 +182,6 @@ function showResults(results) {
   }
 }
 
-
 async function loadResults(){
   const response = await fetch('results');
   let results;
@@ -122,7 +194,7 @@ async function loadResults(){
   showResults(results);
 }
 
-let id = 1
+let id = 1;
 
 async function postNewResults() {
   console.log("Posting to local storage");
@@ -176,7 +248,6 @@ async function postResultsToDatabase() {
   }
 }
 
-
 function checkOnlineStatus(){
   console.log("Online status:", navigator.onLine);
 
@@ -187,7 +258,6 @@ function checkOnlineStatus(){
     postNewResults();
   }
 }
-
 
 function clearScreen(){
   document.getElementById("resultsList").innerHTML = "";
