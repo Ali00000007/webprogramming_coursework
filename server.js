@@ -73,3 +73,58 @@ app.post('/results/db', express.json(), async (req, res) => {
 });
 
 
+// Fetch all race results from the database
+app.get('/results/db', async (req, res) => {
+  try {
+    const db = await dbPromise;
+    
+    // Fetch all races and participants from the database
+    const races = await db.all('SELECT * FROM races');  // Get all races
+    const raceResults = [];
+
+    for (const race of races) {
+      const participants = await db.all('SELECT * FROM results WHERE race_id = ?', race.id);  // Get participants for each race
+      raceResults.push({
+        id: race.id,
+        participants: participants.map(p => ({
+          name: p.name,
+          time: p.time
+        }))
+      });
+    }
+
+    res.json(raceResults);
+  } catch (error) {
+    console.error("Error fetching races from DB:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+
+// Fetch a single race result by ID from the database
+app.get('/results/db/:id', async (req, res) => {
+  try {
+    const db = await dbPromise;
+    const raceId = req.params.id;
+
+    // Fetch the race details
+    const race = await db.get('SELECT * FROM races WHERE id = ?', raceId);
+    if (!race) {
+      return res.status(404).json({ success: false, message: "Race not found" });
+    }
+
+    // Fetch participants for that race
+    const participants = await db.all('SELECT * FROM results WHERE race_id = ?', raceId);
+
+    res.json({
+      id: race.id,
+      participants: participants.map(p => ({
+        name: p.name,
+        time: p.time
+      }))
+    });
+  } catch (error) {
+    console.error("Error fetching race from DB:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});

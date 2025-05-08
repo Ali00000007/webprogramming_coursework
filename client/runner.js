@@ -18,6 +18,26 @@ async function getSingleResult() {
       list.appendChild(errorItem);
     }
   }
+
+
+  async function getSingleResultdb() {
+    let idInput = document.querySelector("#idInput");
+    let id = idInput.value.trim();
+    const response = await fetch(`results/db/${id}`);
+  
+    const list = document.querySelector("#resultsList");
+    list.innerHTML = "";
+  
+    if (response.ok) {
+      const result = await response.json();
+      showResults([result]);
+    } else {
+      const errorItem = document.createElement("li");
+      errorItem.textContent = "Race with that ID does not exist";
+      errorItem.style.color = "red";
+      list.appendChild(errorItem);
+    }
+}
   
 
 function showResults(results) {
@@ -48,5 +68,15 @@ function showResults(results) {
     }
   }
   
+function checkOnlineStatusForGetSingleResult(){
+  console.log("Online status:", navigator.onLine);
 
-idSendInput.addEventListener("click", getSingleResult);
+  if (navigator.onLine){
+    getSingleResultdb();
+  }
+  else{
+    getSingleResult();
+  }
+}
+
+idSendInput.addEventListener("click", checkOnlineStatusForGetSingleResult);

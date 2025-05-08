@@ -122,25 +122,6 @@ async function loadResults(){
   showResults(results);
 }
 
-async function getSingleResult() {
-  let idInput = document.querySelector("#idInput");
-  let id = idInput.value.trim();
-  const response = await fetch(`results/${id}`);
-
-  const list = document.querySelector("#resultsList");
-  list.innerHTML = "";
-
-  if (response.ok) {
-    const result = await response.json();
-    showResults([result]);
-  } else {
-    const errorItem = document.createElement("li");
-    errorItem.textContent = "Race with that ID does not exist";
-    errorItem.style.color = "red";
-    list.appendChild(errorItem);
-  }
-}
-
 let id = 1
 
 async function postNewResults() {
@@ -219,5 +200,4 @@ recordTimeBtn.addEventListener("click", recordTime);
 clearRaceBtn.addEventListener("click", clearRace);
 loadRacesBtn.addEventListener("click", loadResults)
 saveRaceBtn.addEventListener("click", checkOnlineStatus);
-idSendInput.addEventListener("click", getSingleResult);
 clearScreenBtn.addEventListener("click", clearScreen);
