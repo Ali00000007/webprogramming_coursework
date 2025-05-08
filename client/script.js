@@ -259,6 +259,28 @@ function checkOnlineStatus(){
   }
 }
 
+async function loadresultsdb() {
+  const response = await fetch(`/allresults`);
+  let results;
+  if (response.ok){
+    results = await response.json();
+  } else {
+    results = "Failed to load results";
+  }
+  showResults(results);
+}
+
+function checkOnlineStatusForLoadResults(){
+  console.log("Online status:", navigator.onLine);
+
+  if (navigator.onLine){
+    loadresultsdb();
+  }
+  else{
+    loadResults();
+  }
+}
+
 function clearScreen(){
   document.getElementById("resultsList").innerHTML = "";
   //document.getElementById("recordedTimesList").innerHTML = "";
@@ -268,6 +290,6 @@ startTimerBtn.addEventListener("click", startStopTimer);
 resetTimerBtn.addEventListener("click", resetTimer);
 recordTimeBtn.addEventListener("click", recordTime);
 clearRaceBtn.addEventListener("click", clearRace);
-loadRacesBtn.addEventListener("click", loadResults)
+loadRacesBtn.addEventListener("click", checkOnlineStatusForLoadResults);
 saveRaceBtn.addEventListener("click", checkOnlineStatus);
 clearScreenBtn.addEventListener("click", clearScreen);

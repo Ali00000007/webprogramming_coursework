@@ -13,6 +13,7 @@ app.listen(8080);
 
 let db;
 
+
 const dbPromise = open({
   filename: path.resolve('data', 'database.sqlite'),
   driver: sqlite3.Database,
@@ -74,7 +75,7 @@ app.post('/results/db', express.json(), async (req, res) => {
 
 
 // Fetch all race results from the database
-app.get('/results/db', async (req, res) => {
+app.get('/allresults', async (req, res) => {
   try {
     const db = await dbPromise;
     
