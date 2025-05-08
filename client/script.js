@@ -164,28 +164,27 @@ function showResults(results) {
   list.innerHTML = "";
 
   for (const result of results) {
+    if (!Array.isArray(result.participants) || result.participants.length === 0) {
+      continue; // Skip results with no participant data
+    }
+
     const li = document.createElement("li");
     const header = document.createElement("div");
     header.textContent = `ID: ${result.id}`;
     li.appendChild(header);
 
-    if (Array.isArray(result.participants) && result.participants.length > 0) {
-      const sublist = document.createElement("ul");
-      for (const p of result.participants) {
-        const subitem = document.createElement("li");
-        subitem.textContent = `${p.name} (${p.time})`;
-        sublist.appendChild(subitem);
-      }
-      li.appendChild(sublist);
-    } else {
-      const noData = document.createElement("div");
-      noData.textContent = "No participants data";
-      li.appendChild(noData);
+    const sublist = document.createElement("ul");
+    for (const p of result.participants) {
+      const subitem = document.createElement("li");
+      subitem.textContent = `${p.name} (${p.time})`;
+      sublist.appendChild(subitem);
     }
+    li.appendChild(sublist);
 
     list.appendChild(li);
   }
 }
+
 
 async function loadResults(){
   const response = await fetch('results');
