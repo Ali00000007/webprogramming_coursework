@@ -57,12 +57,22 @@ function recordTime() {
   const label = customLabel !== "" ? customLabel : `Participant ${participant}`;
   const time = formatTime(elapsedSeconds);
 
-  // Save the recorded data
-  participantData.push({
+  // Check if the participant ID already exists
+  const existingIndex = participantData.findIndex(p => p.id === participant);
+
+  const participantEntry = {
     id: participant,
     name: label,
     time: time
-  });
+  };
+
+  if (existingIndex !== -1) {
+    // Update the existing entry
+    participantData[existingIndex] = participantEntry;
+  } else {
+    // Push new entry
+    participantData.push(participantEntry);
+  }
 
   // Create a container for the recorded time and name
   const timeRecorded = document.createElement('div');
@@ -72,25 +82,23 @@ function recordTime() {
   const timeText = document.createElement('span');
   timeText.className = 'timeText';
   timeText.textContent = `${label} - ${time}`;
-  
-  // Store the original time in a custom attribute
+
   timeRecorded.setAttribute('data-time', time);
 
-  // Create an "Edit" button
   const editButton = document.createElement('button');
   editButton.className = 'editButton';
   editButton.textContent = 'Edit';
   editButton.addEventListener('click', () => editParticipantName(timeRecorded, label));
 
-  // Add the time and the "Edit" button to the container
   timeRecorded.appendChild(timeText);
   timeRecorded.appendChild(editButton);
 
   recordedTimesList.appendChild(timeRecorded);
 
   participant += 1;
-  nameInput.value = ""; 
+  nameInput.value = "";
 }
+
 
 function editParticipantName(timeRecorded, oldName) {
   const timeText = timeRecorded.querySelector('.timeText');
