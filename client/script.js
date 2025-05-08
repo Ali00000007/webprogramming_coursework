@@ -21,22 +21,19 @@ function formatTime(seconds) {
 }
 
 function startStopTimer() {
-  const icon = startTimerBtn.querySelector("i");
-
   if (timerInterval) {
     clearInterval(timerInterval);
     timerInterval = null;
-    icon.classList.remove("fa-pause");
-    icon.classList.add("fa-play"); // Switch to play icon
+    startTimerBtn.textContent = "▶️ Start";
   } else {
-    icon.classList.remove("fa-play");
-    icon.classList.add("fa-pause"); // Switch to pause icon
+    startTimerBtn.textContent = "⏸️ Stop";
     timerInterval = setInterval(() => {
       elapsedSeconds++;
       timerDisplay.textContent = formatTime(elapsedSeconds);
     }, 1000);
   }
 }
+
 
 function resetTimer(){
   elapsedSeconds = 0;

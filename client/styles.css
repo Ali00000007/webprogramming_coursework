@@ -61,30 +61,3 @@ body {
     border-radius: 5px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
   }
-  
-  #startTimer {
-    background: none;
-    padding: 0;
-    border: none;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    vertical-align: middle;
-    width: 40px;
-    height: 40px;
-}
-
-#startTimer i {
-  font-size: 16px;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: #007BFF;
-  color: white;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 1em;
-}
