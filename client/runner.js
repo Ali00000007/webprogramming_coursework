@@ -1,9 +1,9 @@
-const idSendInput = document.querySelector("#idSend");
+const nameSendInput = document.querySelector("#nameSend");
 
-async function getSingleResult() {
-    let idInput = document.querySelector("#idInput");
-    let id = idInput.value.trim();
-    const response = await fetch(`results/${id}`);
+async function getSingleResultByName() {
+    let nameInput = document.querySelector("#nameInput");
+    let name = nameInput.value.trim();
+    const response = await fetch(`results/name/${name}`);
   
     const list = document.querySelector("#resultsList");
     list.innerHTML = "";
@@ -13,32 +13,30 @@ async function getSingleResult() {
       showResults([result]);
     } else {
       const errorItem = document.createElement("li");
-      errorItem.textContent = "Race with that ID does not exist";
-      errorItem.style.color = "red";
-      list.appendChild(errorItem);
-    }
-  }
-
-
-  async function getSingleResultdb() {
-    let idInput = document.querySelector("#idInput");
-    let id = idInput.value.trim();
-    const response = await fetch(`results/db/${id}`);
-  
-    const list = document.querySelector("#resultsList");
-    list.innerHTML = "";
-  
-    if (response.ok) {
-      const result = await response.json();
-      showResults([result]);
-    } else {
-      const errorItem = document.createElement("li");
-      errorItem.textContent = "Race with that ID does not exist";
+      errorItem.textContent = "Race with that name does not exist";
       errorItem.style.color = "red";
       list.appendChild(errorItem);
     }
 }
+
+async function getSingleResultdbByName() {
+    let nameInput = document.querySelector("#nameInput");
+    let name = nameInput.value.trim();
+    const response = await fetch(`results/db/name/${name}`);
   
+    const list = document.querySelector("#resultsList");
+    list.innerHTML = "";
+  
+    if (response.ok) {
+      const result = await response.json();
+      showResults([result]);
+    } else {
+      const errorItem = document.createElement("li");
+      errorItem.textContent = "Race with that name does not exist";
+      errorItem.style.color = "red";
+      list.appendChild(errorItem);
+    }
+}
 
 function showResults(results) {
     const list = document.querySelector("#resultsList");
@@ -47,7 +45,7 @@ function showResults(results) {
     for (const result of results) {
       const li = document.createElement("li");
       const header = document.createElement("div");
-      header.textContent = `ID: ${result.id}`;
+      header.textContent = `Race Name: ${result.name}`;
       li.appendChild(header);
   
       if (Array.isArray(result.participants) && result.participants.length > 0) {
@@ -67,16 +65,17 @@ function showResults(results) {
       list.appendChild(li);
     }
   }
-  
+
 function checkOnlineStatusForGetSingleResult(){
   console.log("Online status:", navigator.onLine);
 
   if (navigator.onLine){
-    getSingleResultdb();
+    getSingleResultdbByName();
   }
   else{
-    getSingleResult();
+    getSingleResultByName();
   }
 }
 
-idSendInput.addEventListener("click", checkOnlineStatusForGetSingleResult);
+nameSendInput.addEventListener("click", checkOnlineStatusForGetSingleResult);
+

@@ -1,11 +1,7 @@
 import express from 'express';
-import uuid from 'uuid-random';
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
 import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
 
 const app = express();
 app.use(express.static('client'));
@@ -28,7 +24,7 @@ function getResults(req, res){
 
 function getResult(req, res){
   for (const result of results) {
-    if(result.id === req.params.id){
+    if(result.name === req.params.name){
       res.json(result);
       return;
     }
@@ -39,29 +35,44 @@ function getResult(req, res){
 function postResults(req, res) {
   const newResult = {
     id: req.body.id,
+    name: req.body.name,
     participants: req.body.participants
   };
-
+  for (const result of results) {
+    if(result.name === req.body.name){
+      return res.status(400).json({ error: 'Name already exists' }); 
+    }
+  } 
+  console.log(newResult);
   results.push(newResult);
   res.json(results);
 }
 
 
-app.get('/results/:id', getResult)
+
+app.get('/results/name/:name', getResult)
 app.get('/results', getResults);
 app.post('/results', express.json(), postResults)
 app.post('/results/db', express.json(), async (req, res) => {
   try {
-    const participants = req.body.participants;
+    const { name, participants } = req.body;
     const db = await dbPromise;
 
-    const result = await db.run('INSERT INTO races DEFAULT VALUES');
-    const raceId = result.lastID; 
+    if (!name || !Array.isArray(participants) || participants.length === 0) {
+      return res.status(400).json({ success: false, message: "Invalid request body. Ensure 'name' and 'participants' are provided." });
+    }
 
-    const stmt = await db.prepare('INSERT INTO results (race_id, name, time) VALUES (?, ?, ?)');
+    const existingRace = await db.get('SELECT * FROM races WHERE name = ?', name);
+    if (existingRace) {
+      return res.status(400).json({ success: false, message: "Race name already exists." });
+    }
 
+    const result = await db.run('INSERT INTO races (name) VALUES (?)', name);
+    const raceId = result.lastID;
+
+    const stmt = await db.prepare('INSERT INTO results (race_id, race_name, name, time) VALUES (?, ?, ?, ?)');
     for (const p of participants) {
-      await stmt.run(raceId, p.name, p.time); 
+      await stmt.run(raceId, name, p.name, p.time);
     }
 
     await stmt.finalize();
@@ -73,20 +84,17 @@ app.post('/results/db', express.json(), async (req, res) => {
   }
 });
 
-
-// Fetch all race results from the database
 app.get('/allresults', async (req, res) => {
   try {
     const db = await dbPromise;
     
-    // Fetch all races and participants from the database
-    const races = await db.all('SELECT * FROM races');  // Get all races
+    const races = await db.all('SELECT * FROM races');
     const raceResults = [];
 
     for (const race of races) {
-      const participants = await db.all('SELECT * FROM results WHERE race_id = ?', race.id);  // Get participants for each race
+      const participants = await db.all('SELECT * FROM results WHERE race_id = ?', race.id);
       raceResults.push({
-        id: race.id,
+        name: race.name,
         participants: participants.map(p => ({
           name: p.name,
           time: p.time
@@ -101,24 +109,20 @@ app.get('/allresults', async (req, res) => {
   }
 });
 
-
-// Fetch a single race result by ID from the database
-app.get('/results/db/:id', async (req, res) => {
+app.get('/results/db/name/:name', async (req, res) => {
   try {
     const db = await dbPromise;
-    const raceId = req.params.id;
+    const raceName = req.params.name;
 
-    // Fetch the race details
-    const race = await db.get('SELECT * FROM races WHERE id = ?', raceId);
+    const race = await db.get('SELECT * FROM races WHERE name = ?', raceName);
     if (!race) {
       return res.status(404).json({ success: false, message: "Race not found" });
     }
 
-    // Fetch participants for that race
-    const participants = await db.all('SELECT * FROM results WHERE race_id = ?', raceId);
+    const participants = await db.all('SELECT * FROM results WHERE race_id = ?', race.id);
 
     res.json({
-      id: race.id,
+      name: race.name,
       participants: participants.map(p => ({
         name: p.name,
         time: p.time

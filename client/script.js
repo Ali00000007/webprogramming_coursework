@@ -57,7 +57,6 @@ function recordTime() {
   const label = customLabel !== "" ? customLabel : `Participant ${participant}`;
   const time = formatTime(elapsedSeconds);
 
-  // Check if the participant ID already exists
   const existingIndex = participantData.findIndex(p => p.id === participant);
 
   const participantEntry = {
@@ -67,17 +66,14 @@ function recordTime() {
   };
 
   if (existingIndex !== -1) {
-    // Update the existing entry
     participantData[existingIndex] = participantEntry;
   } else {
-    // Push new entry
     participantData.push(participantEntry);
   }
 
-  // Create a container for the recorded time and name
   const timeRecorded = document.createElement('div');
   timeRecorded.className = 'timeRecorded';
-  timeRecorded.setAttribute('data-id', participant); // Assign an ID for editing later
+  timeRecorded.setAttribute('data-id', participant);
 
   const timeText = document.createElement('span');
   timeText.className = 'timeText';
@@ -103,20 +99,16 @@ function recordTime() {
 function editParticipantName(timeRecorded, oldName) {
   const timeText = timeRecorded.querySelector('.timeText');
   
-  // Replace the name text with an input field to edit
   const nameInput = document.createElement('input');
   nameInput.type = 'text';
   nameInput.value = oldName;
   
-  // Replace the time text with the input field
   timeRecorded.replaceChild(nameInput, timeText);
 
-  // Change the "Edit" button to "Save"
   const saveButton = document.createElement('button');
   saveButton.className = 'saveButton';
   saveButton.textContent = 'Save';
   
-  // Replace the "Edit" button with the "Save" button
   saveButton.addEventListener('click', () => saveParticipantName(timeRecorded, nameInput.value));
   timeRecorded.replaceChild(saveButton, timeRecorded.querySelector('.editButton'));
 }
@@ -124,32 +116,26 @@ function editParticipantName(timeRecorded, oldName) {
 function saveParticipantName(timeRecorded, newName) {
   const nameInput = timeRecorded.querySelector('input');
   
-  // Retrieve the original time stored in the 'data-time' attribute
   const originalTime = timeRecorded.getAttribute('data-time');
   
-  // Create a new span for the time and name
   const timeText = document.createElement('span');
   timeText.className = 'timeText';
   timeText.textContent = `${newName} - ${originalTime}`;
 
-  // Replace the input field with the new name and original time
   timeRecorded.replaceChild(timeText, nameInput);
 
-  // Replace the "Save" button back to the "Edit" button
   const editButton = document.createElement('button');
   editButton.className = 'editButton';
   editButton.textContent = 'Edit';
   editButton.addEventListener('click', () => editParticipantName(timeRecorded, newName));
   timeRecorded.replaceChild(editButton, timeRecorded.querySelector('.saveButton'));
 
-  // Update the participant data in the `participantData` array
   const participantId = timeRecorded.getAttribute('data-id');
   const participantIndex = participantData.findIndex(p => p.id === parseInt(participantId));
   if (participantIndex !== -1) {
     participantData[participantIndex].name = newName;
   }
 }
-
 
 
 function clearRace(){
@@ -164,13 +150,13 @@ function showResults(results) {
   list.innerHTML = "";
 
   for (const result of results) {
-    if (!Array.isArray(result.participants) || result.participants.length === 0) {
-      continue; // Skip results with no participant data
+    if (result.participants.length === 0) {
+      continue;
     }
 
     const li = document.createElement("li");
     const header = document.createElement("div");
-    header.textContent = `ID: ${result.id}`;
+    header.textContent = `Race Name: ${result.name}`;
     li.appendChild(header);
 
     const sublist = document.createElement("ul");
@@ -205,8 +191,16 @@ async function postNewResults() {
   resetTimer();
   participant = 1;
 
+  const raceName = document.querySelector("#raceName").value.trim(); 
+
+  if (!raceName) {
+    alert("Please provide a race name.");
+    return;
+  }
+
   const payload = {
     id: id.toString(),
+    name: raceName,
     participants: participantData
   };
 
@@ -220,21 +214,33 @@ async function postNewResults() {
     const updatedResults = await response.json();
     document.querySelectorAll(".timeRecorded").forEach(element => element.remove());
     participantData = [];
+    document.querySelector("#raceName").value = ""; 
   } else {
-    console.log("Failed to load messages");
+    const errorData = await response.json();
+    document.getElementById('error-message').innerText = errorData.error;
+    document.getElementById('error-message').style.display = 'block';
+    console.log("Failed to post to local storage");
   }
 
   id += 1;
 }
+
 
 async function postResultsToDatabase() {
   console.log("Posting to database");
   resetTimer();
   participant = 1;
 
+  const raceName = document.querySelector("#raceName").value.trim();
+
+  if (!raceName) {
+    alert("Please provide a race name.");
+    return;
+  }
+
   const payload = {
-    id: id.toString(), 
-    participants: participantData 
+    name: raceName,
+    participants: participantData
   };
 
   const response = await fetch('/results/db', {
@@ -246,11 +252,17 @@ async function postResultsToDatabase() {
   });
 
   if (response.ok) {
-    console.log("Results posted successfully.");
-  } else {
+  console.log("Results posted successfully.");
+  document.querySelector("#raceName").value = ""; 
+  document.querySelector("#raceName").value = ""; 
+  }else {
+    const errorData = await response.json();
+    document.getElementById('error-message').innerText = errorData.message;
+    document.getElementById('error-message').style.display = 'block';
     console.log("Failed to post results.");
   }
 }
+
 
 function checkOnlineStatus(){
   console.log("Online status:", navigator.onLine);
@@ -287,7 +299,6 @@ function checkOnlineStatusForLoadResults(){
 
 function clearScreen(){
   document.getElementById("resultsList").innerHTML = "";
-  //document.getElementById("recordedTimesList").innerHTML = "";
 }
 
 startTimerBtn.addEventListener("click", startStopTimer);
