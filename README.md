@@ -61,6 +61,16 @@ This feature allows race administrators or users to **download race results as a
 
 ---
 
+## Design Decisions
+
+### Splitting Runners and Admin into Seperate Pages
+The decision to split runners and admins into separate pages was made to clearly define and separate the roles and functionalities available to each type of user. This design ensures:
+- **Role clarity**: Admins can manage race data (start/stop timers, save results, view all races), while runners have a limited set of interactions (view results).
+- **Security**: Sensitive functions, such as modifying race results and accessing all race data, are restricted to admins.
+- **User experience**: By giving each group a tailored interface, we reduce unnecessary complexity for runners while providing admins with the necessary controls and insights.
+
+---
+
 ## AI
 AI tools (ChatGPT) were used to assist with developing some logic, particularly around SQLite integration and DOM manipulation.
 
