@@ -12,6 +12,22 @@ const clearScreenBtn = document.querySelector("#clearScreen");
 let timerInterval;
 let elapsedSeconds = 0;
 
+async function updateOnlineStatus() {
+      const statusElement = document.getElementById("connectionStatus");
+
+      if (navigator.onLine) {
+        statusElement.textContent = "online";
+        statusElement.style.color = "green";
+      } else {
+        statusElement.textContent = "offline";
+        statusElement.style.color = "red";
+      }
+    }
+
+window.addEventListener('load', updateOnlineStatus);
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+
 function formatTime(seconds) {
   const hrs = Math.floor(seconds / 3600);
   const mins = Math.floor((seconds % 3600) / 60);
