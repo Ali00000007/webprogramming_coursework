@@ -1,63 +1,97 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    text-align: center;
-    padding: 20px;
-  }
-  
-  h1 {
-    color: #333;
-  }
-  
-  input, button {
-    font-size: 16px;
-    padding: 10px;
-    margin: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  input[type="text"] {
-    width: 250px;
-  }
-  
-  button {
-    font-size: 16px;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #007BFF;
-    color: white;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 40px;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  text-align: center;
+  padding: 20px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  #timerDisplay {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 20px 0;
-    color: #333;
-  }
-  
-  ul {
-    list-style-type: none;
-    padding: 0;
-    max-width: 400px;
-    margin: 20px auto;
-  }
-  
-  li {
-    background: white;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-  }
+h1 {
+  color: #333;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+input, button {
+  font-size: 16px;
+  padding: 12px;
+  margin: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+input[type="text"] {
+  width: 100%;
+  max-width: 350px;
+}
+
+button {
+  background-color: #007BFF;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  height: 45px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#timerDisplay {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 30px 0;
+  color: #333;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 20px auto;
+  width: 100%;
+  max-width: 600px;
+}
+
+li {
+  background: white;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 5px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+li:hover {
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+#status {
+  font-size: 16px;
+  color: #333;
+  margin-top: 20px;
+}
+
+#error-message {
+  color: red;
+  font-size: 16px;
+  margin-top: 15px;
+  display: none;
+}
