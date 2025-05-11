@@ -95,3 +95,24 @@ li:hover {
   margin-top: 15px;
   display: none;
 }
+
+.recorded-times-container {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+
+.timeRecorded {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding: 6px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
