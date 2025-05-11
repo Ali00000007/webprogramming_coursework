@@ -50,7 +50,7 @@ Click "Clear Race" to reset timers and clear participants, or "Clear Screen" to 
 These buttons allow users to reset the session without reloading the page. This makes it quick to begin a new race and tidy up visual clutter between events.
 
 ## AI
-AI tools (ChatGPT) were used to assist with developing some logic, particularly around SQLite integration and DOM manipulation for editing UI elements.
+AI tools (ChatGPT) were used to assist with developing some logic, particularly around SQLite integration and DOM manipulation.
 
 ### Prompts to develop Express & SQLite integration
 A sequence of prompts helped me set up the backend:
