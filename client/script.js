@@ -1,5 +1,6 @@
 const startTimerBtn = document.querySelector("#startTimer");
 const timerDisplay = document.querySelector("#timerDisplay");
+const resetTimerBtn = document.querySelector("#resetTimer");
 const recordTimeBtn = document.querySelector("#recordTime");
 const clearRaceBtn = document.querySelector("#clearRace");
 const loadRacesBtn = document.querySelector("#loadRaces");
@@ -31,6 +32,12 @@ function startStopTimer() {
       timerDisplay.textContent = formatTime(elapsedSeconds);
     }, 1000);
   }
+}
+
+
+function resetTimer(){
+  elapsedSeconds = 0;
+  timerDisplay.textContent = formatTime(elapsedSeconds);
 }
 
 let participantData = [];
@@ -322,6 +329,7 @@ function clearScreen(){
 }
 
 startTimerBtn.addEventListener("click", startStopTimer);
+resetTimerBtn.addEventListener("click", resetTimer);
 recordTimeBtn.addEventListener("click", recordTime);
 clearRaceBtn.addEventListener("click", clearRace);
 loadRacesBtn.addEventListener("click", checkOnlineStatusForLoadResults);
