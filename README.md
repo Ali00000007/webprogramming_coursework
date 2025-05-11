@@ -71,10 +71,3 @@ To create the inline participant name editor:
 > How to pass arguments to a function inside an event listener
 
 The response allowed the "editParticipantName" function to run only when the edit button had been clicked
-
-
-### What went well / what went wrong
-- **Went well**: The SQLite and Express setup went very smoothly with ChatGPT's help. I was able to understand how to write parameterized queries and avoid SQL injection issues.
-- **Went wrong**: Early prompts lacked enough detail, especially regarding DOM state management. Initially, ChatGPT's examples didn't track participant IDs, leading to issues overwriting data.
-- **What I learned**: Prompt specificity is key. Naming what I wanted to do (e.g., “update participant name in both DOM and data array”) led to clearer suggestions. I also learned a lot about async database handling and dynamic front-end updates.
-

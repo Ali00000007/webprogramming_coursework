@@ -7,69 +7,69 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  
-  <div>
-  
-    <div>
-      <label for="participantName">Participant Name:</label>
-      <input id="participantName" type="text" placeholder="e.g. Alice, Team B">
+
+  <div class="container">
+    <h1>Race Timer</h1>
+
+    <div id="status">
+      <p>You are <span id="connectionStatus">offline</span></p>
     </div>
-  
-    <div>
+
+    <div class="button-group">
       <button id="startTimer">▶️ Start Race</button>
-      <button id="resetTimer">🔄 Reset Timer</button>
-      <button id="recordTime">⏱️ Record Time</button>
       <button id="clearRace">🗑️ Delete Current Race</button>
       <button id="saveRace">💾 Save Race</button>
       <button id="loadRaces">📂 Load All Races</button>
       <button id="clearScreen">🧹 Clear Screen</button>
     </div>
-    
 
-    <div id="status">
-      <p id="onlineStatus">You are <span id="connectionStatus">offline</span></p>
+    <div class="input-group">
+      <label for="raceName">Race Name:</label>
+      <input id="raceName" type="text" placeholder="e.g. Spring 5K, Marathon">
     </div>
 
-  <div>
-  <label for="raceName">Race Name:</label>
-  <input id="raceName" type="text" placeholder="e.g. Spring 5K, Marathon">
+    <div class="input-group">
+      <label for="participantName">Participant Name:</label>
+      <input id="participantName" type="text" placeholder="e.g. Alice, Team B">
+      <button id="recordTime">⏱️ Record Time</button>
+
+    </div>
+
+    <div id="error-message"></div>
+
+    <p id="timerDisplay">00:00:00</p>
+
+    <div>
+      <h2 id="raceResults"></h2>
+      <ul id="resultsList"></ul>
+    </div>
+
+    <div>
+      <h2 id="recordedTimes"></h2>
+      <ul id="recordedTimesList"></ul>
+    </div>
+    
   </div>
 
-  <div id="error-message" style="color: red; display: none;"></div>
-
-
-  <p id="timerDisplay">00:00:00</p>
-
-
-  
-
-  <h2>Race Results</h2>
-  <ul id="resultsList"></ul>
-
-  <h2>Recorded Times</h2>
-  <ul id="recordedTimesList"></ul>
-
   <script src="script.js"></script>
-  
+
   <script>
-  async function updateOnlineStatus() {
-  const statusElement = document.getElementById("connectionStatus");
-  const currentRaceIdElement = document.getElementById("currentRaceId");
+    async function updateOnlineStatus() {
+      const statusElement = document.getElementById("connectionStatus");
 
-  if (navigator.onLine) {
-    statusElement.textContent = "online";
-    statusElement.style.color = "green";
-  } else {
-    statusElement.textContent = "offline";
-    statusElement.style.color = "red";
-  }
-}
+      if (navigator.onLine) {
+        statusElement.textContent = "online";
+        statusElement.style.color = "green";
+      } else {
+        statusElement.textContent = "offline";
+        statusElement.style.color = "red";
+      }
+    }
 
-  window.addEventListener('load', updateOnlineStatus);
-
-  window.addEventListener('online', updateOnlineStatus);
-  window.addEventListener('offline', updateOnlineStatus);
-
+    window.addEventListener('load', updateOnlineStatus);
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
   </script>
+
 </body>
 </html>
