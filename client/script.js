@@ -10,7 +10,7 @@ const idSendInput = document.querySelector("#idSend");
 const clearScreenBtn = document.querySelector("#clearScreen");
 
 let timerInterval;
-let elapsedSeconds = 0;
+let elapsedSeconds = 0; 
 
 async function updateOnlineStatus() {
       const statusElement = document.getElementById("connectionStatus");
