@@ -5,27 +5,31 @@ Race Time is a web application designed for timing and recording race events, su
 
 ### Key Feature: Timer Control
 Find and use this by clicking the *"Start"*, *"Stop"*, *"Reset Timer"*, and *"Record Time"* buttons.
+I decided to include the reset function in the case that the admin accidentally presses start race, so instead of having to save an unfinished race, they can just restart it.
 
 ### Key Feature: Participant Recording
-You can record multiple participant finish times with customisable names.  
+You press the *'Record Time'* button to record the time of a participant.
+You can also enter the name of the participant before recording their time next to the text box that says 'Participant Name'.
 In the event that multiple runners are finishing all at the same time, you can press the *"Record Time"* button multiple times. This will save the runners as *'Participant 1'*, *'Participant 2'* etc.
+Initially I set up the front end such that the admin would select a runner from a drop down box, however this was deemed ineffective when there would be multiple participants finishing in close proximity to each other.
 
 ### Inline Participant Editing
 Click the *"Edit"* button next to a participant’s name to change it.
 
 The editable name feature lets admins correct or personalise participant names after recording. It replaces the participant label with an input field, allowing real-time editing without refreshing or re-entering data. This improves usability and data accuracy.
+The editing feature was designed because of how participant times are recorded. If there are multiple participants finishing in close proximity to each other and you press record time for all of them, you can then go back and add their names after the race is finished so that the participants knwo who they are.
 
 ### Key Feature: Dual Save System (Offline)
 After the race is finished, the admin can click *"Save Race"*.
 
-- The application detects whether the user is offline.
+- The application detects whether the user is offline/online.
 - If offline, results are saved into local storage through the `results` route.
 - Results are uploaded as a batch upload after the race is finished.
 
 ### Key Feature: Dual Save System (Online)
 After the race is finished, the admin can click *"Save Race"*.
 
-- The application detects whether the user is online.
+- The application detects whether the user is offline/online.
 - If online, results are stored in a persistent SQLite database via the `/results/db` route.
 - Results are uploaded as a batch upload after the race is finished.
 
@@ -33,7 +37,7 @@ After the race is finished, the admin can click *"Save Race"*.
 Uses the `/allresults` route to fetch stored race data.
 
 - The admin has the ability to view all the race results via a single click on the *"Load All Races"* button.
-- Each race displays its name, which the admin can share with runners before or after the event.
+- Each race displays its name, which the admin can share with runners before (if they agree onm a race name before the event) or after the event.
 - Data is stored in an SQLite database with two tables: `races` and `results`.
 
 This system supports viewing full race histories beyond a single session.
@@ -51,7 +55,7 @@ Click *"Clear Race"* to reset timers and clear participants, or *"Clear Screen"*
 These buttons allow users to reset the session without reloading the page. This makes it quick to begin a new race and tidy up visual clutter between events.
 
 ### Key Feature: Exporting Results to CSV
-This feature allows race administrators or users to **download race results as a CSV file**.
+This feature allows race administrators or users to download race results as a CSV file.
 
 - When viewing a saved race's results, a user can click the *"Export"* button.
 - This automatically:
@@ -93,7 +97,7 @@ The response suggested that in the route I make two queries — one for checking
 
 The response talked about making a blob, and then generating a link for it.
 This response did not help at all because I had no idea what a blob was or how to generate a link for it.
-Instead I just went on youtube looked up a tutorial and implemented the knowledge I learnt from the tutorial to fit the needs of this project.
+Therefore I just went on youtube looked up a tutorial and implemented the knowledge I learnt from the tutorial to fit the needs of this project.
 
 ### Prompts to develop inline editing
 To create the inline participant name editor:
