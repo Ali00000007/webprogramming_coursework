@@ -12,6 +12,8 @@ const clearScreenBtn = document.querySelector("#clearScreen");
 let timerInterval;
 let elapsedSeconds = 0; 
 
+// Updates the connectionStatus paragraph to show the current online status
+
 async function updateOnlineStatus() {
       const statusElement = document.getElementById("connectionStatus");
 
@@ -28,6 +30,8 @@ window.addEventListener('load', updateOnlineStatus);
 window.addEventListener('online', updateOnlineStatus);
 window.addEventListener('offline', updateOnlineStatus);
 
+// formats the time into hh:mm:ss
+
 function formatTime(seconds) {
   const hrs = Math.floor(seconds / 3600);
   const mins = Math.floor((seconds % 3600) / 60);
@@ -35,6 +39,9 @@ function formatTime(seconds) {
 
   return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 }
+
+// starts and stops the timer
+// the start/stop button updates with each click
 
 function startStopTimer() {
   if (timerInterval) {
@@ -51,35 +58,37 @@ function startStopTimer() {
 }
 
 
+// resets the timer back to 0 
+
 function resetTimer(){
   elapsedSeconds = 0;
   timerDisplay.textContent = formatTime(elapsedSeconds);
 }
 
+
+// used for sending data to the server for offline functionality 
 let participantData = [];
+
+// participant id which is incremented for each participant recorded
 let participant = 1;
 
-function formatTime(seconds) {
-  const hrs = Math.floor(seconds / 3600);
-  const mins = Math.floor((seconds % 3600) / 60);
-  const secs = seconds % 60;
-
-  return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-}
+// Record the time of a participant when the record time button is pressed
 
 function recordTime() {
   const nameInput = document.querySelector("#participantName");
-  const customLabel = nameInput.value.trim();
-  const label = customLabel !== "" ? customLabel : `Participant ${participant}`;
-  const time = formatTime(elapsedSeconds);
+  const customLabel = nameInput.value.trim(); // gets the participant name from the input box and trims the value to remove spaces at the end
+  const label = customLabel !== "" ? customLabel : `Participant ${participant}`; 
+  const time = formatTime(elapsedSeconds); // gets the current time from the format time function to save next to the participant 
 
-  const existingIndex = participantData.findIndex(p => p.id === participant);
+  const existingIndex = participantData.findIndex(p => p.id === participant); 
 
   const participantEntry = {
     id: participant,
     name: label,
     time: time
   };
+
+  // checks if a participant with that id already exists in the list
 
   if (existingIndex !== -1) {
     participantData[existingIndex] = participantEntry;
@@ -97,6 +106,8 @@ function recordTime() {
 
   timeRecorded.setAttribute('data-time', time);
 
+  // creates an edit button for every participant as it's created every time a new time is recorded
+
   const editButton = document.createElement('button');
   editButton.className = 'editButton';
   editButton.textContent = 'Edit';
@@ -111,6 +122,7 @@ function recordTime() {
   nameInput.value = "";
 }
 
+// allows admin to edit the participants name after recording it
 
 function editParticipantName(timeRecorded, oldName) {
   const timeText = timeRecorded.querySelector('.timeText');
@@ -128,6 +140,8 @@ function editParticipantName(timeRecorded, oldName) {
   saveButton.addEventListener('click', () => saveParticipantName(timeRecorded, nameInput.value));
   timeRecorded.replaceChild(saveButton, timeRecorded.querySelector('.editButton'));
 }
+
+// saves the new name from the input box
 
 function saveParticipantName(timeRecorded, newName) {
   const nameInput = timeRecorded.querySelector('input');
@@ -153,6 +167,7 @@ function saveParticipantName(timeRecorded, newName) {
   }
 }
 
+// removes all the recorded times to clear the race
 
 function clearRace(){
   participant = 1;
@@ -160,6 +175,8 @@ function clearRace(){
   resetTimer();
   startStopTimer();
 }
+
+// loops through the results (if the results list is bigger than 0) and displays the results
 
 function showResults(results) {
   const list = document.querySelector("#resultsList");
@@ -169,7 +186,7 @@ function showResults(results) {
     if (result.participants.length === 0) {
       continue;
     }
-
+    
     const li = document.createElement("li");
     const header = document.createElement("div");
     header.textContent = `Race Name: ${result.name}`;
@@ -191,6 +208,8 @@ function showResults(results) {
     list.appendChild(li);
   }
 }
+
+// exports a set of results to csv
 
 function exportToCSV(result) {
   const headers = ["Participant Name", "Time"];
@@ -214,6 +233,7 @@ function exportToCSV(result) {
   }
 }
 
+// loads the results from the server and calls the showResults() function to display it
 
 async function loadResults(){
   const response = await fetch('results');
@@ -228,6 +248,8 @@ async function loadResults(){
 }
 
 let id = 1;
+
+// posts the race to the server (offline)
 
 async function postNewResults() {
   console.log("Posting to local storage");
@@ -269,6 +291,8 @@ async function postNewResults() {
 }
 
 
+// posts results to the server (online)
+
 async function postResultsToDatabase() {
   console.log("Posting to database");
   resetTimer();
@@ -306,6 +330,7 @@ async function postResultsToDatabase() {
   }
 }
 
+// checks the online status to see whether the race should be saved to the database or local storage
 
 function checkOnlineStatus(){
   console.log("Online status:", navigator.onLine);
@@ -318,6 +343,8 @@ function checkOnlineStatus(){
   }
 }
 
+// loads the results from the database and calls showResults() to display the results
+
 async function loadresultsdb() {
   const response = await fetch(`/allresults`);
   let results;
@@ -329,6 +356,8 @@ async function loadresultsdb() {
   showResults(results);
 }
 
+// checks the online status to determine whether to load the results from the database or local storage
+
 function checkOnlineStatusForLoadResults(){
   console.log("Online status:", navigator.onLine);
 
@@ -339,6 +368,8 @@ function checkOnlineStatusForLoadResults(){
     loadResults();
   }
 }
+
+// clears the screen
 
 function clearScreen(){
   document.getElementById("resultsList").innerHTML = "";

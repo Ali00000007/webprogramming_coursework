@@ -1,5 +1,7 @@
 const nameSendInput = document.querySelector("#nameSend");
 
+// gets a race based on the name the user input from local storage
+
 async function getSingleResultByName() {
     let nameInput = document.querySelector("#nameInput");
     let name = nameInput.value.trim();
@@ -19,6 +21,8 @@ async function getSingleResultByName() {
     }
 }
 
+// gets a race based on user input from the database
+
 async function getSingleResultdbByName() {
     let nameInput = document.querySelector("#nameInput");
     let name = nameInput.value.trim();
@@ -37,6 +41,8 @@ async function getSingleResultdbByName() {
       list.appendChild(errorItem);
     }
 }
+
+// displays the results of the race
 
 function showResults(results) {
     const list = document.querySelector("#resultsList");
@@ -71,6 +77,8 @@ function showResults(results) {
     }
 }
 
+// exports the results of the selected race to a csv file
+
 function exportToCSV(result) {
     const headers = ["Participant Name", "Time"];
     const rows = result.participants.map(p => [p.name, p.time]);
@@ -93,6 +101,8 @@ function exportToCSV(result) {
     }
 }
 
+
+// checks the online status to determine whether to load the results from the database or local storage
 
 function checkOnlineStatusForGetSingleResult(){
   console.log("Online status:", navigator.onLine);
