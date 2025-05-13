@@ -297,7 +297,7 @@ async function postResultsToDatabase() {
   if (response.ok) {
   console.log("Results posted successfully.");
   document.querySelector("#raceName").value = ""; 
-  document.querySelector("#raceName").value = ""; 
+  document.querySelectorAll(".timeRecorded").forEach(element => element.remove());
   }else {
     const errorData = await response.json();
     document.getElementById('error-message').innerText = errorData.message;
