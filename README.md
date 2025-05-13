@@ -87,6 +87,14 @@ Loop through each entry and insert it into the database."
 
 The response suggested that in the route I make two queries — one for checking if an entry in the database exists, followed by the query I wanted to run.
 
+### Prompts to develop feature to export data as a csv file
+
+> How does exporting data to a csv fropm javascript work?
+
+The response talked about making a blob, and then generating a link for it.
+This response did not help at all because I had no idea what a blob was or how to generate a link for it.
+Instead I just went on youtube looked up a tutorial and implemented the knowledge I learnt from the tutorial to fit the needs of this project.
+
 ### Prompts to develop inline editing
 To create the inline participant name editor:
 
